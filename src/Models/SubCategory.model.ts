@@ -55,15 +55,7 @@ export class SubCategory implements ISubCategory {
 
 const subCategorySchema = SchemaFactory.createForClass(SubCategory);
 
-subCategorySchema.pre('validate', function () {
-  if (this.isModified('name')) {
-    this.slug = slugify(this.name, {
-      lower: true,
-      strict: true,
-      trim: true,
-    });
-  }
-});
+
 
 
 export const subCategoryModel = MongooseModule.forFeature([

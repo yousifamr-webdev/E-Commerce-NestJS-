@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AuthService } from './module/auth/auth.service';
+import { AuthService } from './modules/auth/auth.service';
 import { S3BucketService } from './common/services/s3.service';
 import { promisify } from 'util';
 import { pipeline } from 'stream';

@@ -13,6 +13,7 @@ export interface ICategory {
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
   strictQuery: true,
+  id: false,
 })
 export class Category implements ICategory {
   @Prop({
@@ -41,15 +42,7 @@ export class Category implements ICategory {
 
 const categorySchema = SchemaFactory.createForClass(Category);
 
-categorySchema.pre('validate', function () {
-  if (this.isModified('name')) {
-    this.slug = slugify(this.name, {
-      lower: true,
-      strict: true,
-      trim: true,
-    });
-  }
-});
+
 
 export const categoryModel = MongooseModule.forFeature([
   { name: Category.name, schema: categorySchema },

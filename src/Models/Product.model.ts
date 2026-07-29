@@ -14,7 +14,7 @@ export interface IProduct {
   priceAfterDiscount: number;
   discount: {
     value: number;
-    type: DiscountEnum;
+    discountType: DiscountEnum;
   };
   stock: number;
   gallery: string[];
@@ -28,11 +28,27 @@ export interface IProduct {
   isActive: boolean;
 }
 
+@Schema({_id:false})
+export class DiscountSchema {
+  @Prop({
+    type: Number,
+    required: true,
+  })
+  value!: number;
+
+  @Prop({
+    type: Number,
+    enum: DiscountEnum,
+  })
+  discountType!: DiscountEnum;
+}
+
 @Schema({
   timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
   strictQuery: true,
+  id:false
 })
 export class Product implements IProduct {
   @Prop({
@@ -47,7 +63,11 @@ export class Product implements IProduct {
     required: true,
     unique: true,
     set: function (this: Product) {
-      const slug = slugify(this.name);
+      const slug = slugify(this.name, {
+        lower: true,
+        strict: true,
+        trim: true,
+      });
       return slug;
     },
   })
@@ -86,17 +106,11 @@ export class Product implements IProduct {
   description!: string;
 
   @Prop({
-    type: {
-      discount: Number,
-      type: {
-        type: Number,
-        enum: DiscountEnum,
-      },
-    },
+  type: DiscountSchema
   })
   discount!: {
     value: number;
-    type: DiscountEnum;
+    discountType: DiscountEnum;
   };
 
   @Prop({
@@ -133,15 +147,6 @@ export class Product implements IProduct {
 
 const productSchema = SchemaFactory.createForClass(Product);
 
-productSchema.pre('validate', function () {
-  if (this.isModified('name')) {
-    this.slug = slugify(this.name, {
-      lower: true,
-      strict: true,
-      trim: true,
-    });
-  }
-});
 
 
 export const productModel = MongooseModule.forFeature([

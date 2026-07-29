@@ -20,6 +20,9 @@ import {
 import { multerOptions } from 'src/common/utils/multer.config';
 import type { UserDocument } from 'src/Models/User.model';
 import { UserService } from './user.service';
+import { TokenPayload } from 'src/common/decorator/tokenPayload.decorator';
+import type { JwtPayload } from 'jsonwebtoken';
+
 
 @Controller('user')
 export class UserController {
@@ -64,6 +67,18 @@ export class UserController {
     @User() user: UserDocument,
   ) {
     const result = await this._userService.uploadCoverPics(files, user);
+
+    return result;
+  }
+
+  @Auth({})
+  @Post('/logout')
+  async logOut(
+    @Body() bodyData: any,
+    @User() user: UserDocument,
+    @TokenPayload() tokenPayload:JwtPayload
+  ) {
+    const result = await this._userService.logOut(bodyData, user, tokenPayload);
 
     return result;
   }

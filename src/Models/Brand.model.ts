@@ -6,7 +6,6 @@ import { Category } from './Category.model';
 export interface IBrand {
   name: string;
   slug: string;
-  image: string;
   isActive: boolean;
   logo: string;
 }
@@ -32,10 +31,6 @@ export class Brand implements IBrand {
   })
   slug!: string;
   @Prop({
-    type: String,
-  })
-  image!: string;
-  @Prop({
     type: Boolean,
     default: true,
   })
@@ -49,15 +44,7 @@ export class Brand implements IBrand {
 
 const brandSchema = SchemaFactory.createForClass(Brand);
 
-brandSchema.pre('validate', function () {
-  if (this.isModified('name')) {
-    this.slug = slugify(this.name, {
-      lower: true,
-      strict: true,
-      trim: true,
-    });
-  }
-});
+
 
 export const brandModel = MongooseModule.forFeature([
   { name: Brand.name, schema: brandSchema },

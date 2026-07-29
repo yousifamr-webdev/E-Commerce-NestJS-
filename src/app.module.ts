@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './module/auth/auth.module';
-import { UserController } from './module/user/user.controller';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserController } from './modules/user/user.controller';
 import { User } from 'src/Models/User.model';
-import { UserModule } from './module/user/user.module';
-import { OrderModule } from './module/order/order.module';
+import { UserModule } from './modules/user/user.module';
+import { OrderModule } from './modules/order/order.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { SharedModule } from './common/module/shared.module';
-import { CategoryModule } from './module/category/category.module';
-import { SubCategoryModule } from './module/subcategory/subcategory.module';
-import { BrandModule } from './module/brand/brand.module';
+import { CategoryModule } from './modules/category/category.module';
+import { SubCategoryModule } from './modules/subcategory/subcategory.module';
+import { BrandModule } from './modules/brand/brand.module';
 import { S3BucketService } from './common/services/s3.service';
-import { UserService } from './module/user/user.service';
+import { UserService } from './modules/user/user.service';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -48,8 +49,10 @@ import { UserService } from './module/user/user.service';
       }),
       inject: [ConfigService],
     }),
+
+    ProductModule,
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService,S3BucketService],
+  providers: [AppService, UserService, S3BucketService],
 })
 export class AppModule {}
