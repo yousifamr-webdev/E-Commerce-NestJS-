@@ -1,4 +1,4 @@
-export enum DiscountEnum {
-  percentage,
-  static,
+export enum DiscountTypeEnum {
+  Percentage,
+  Static,
 }

@@ -7,7 +7,7 @@ import { IProduct, Product } from 'src/Models/Product.model';
 import { Category } from 'src/Models/Category.model';
 import { SubCategory } from 'src/Models/SubCategory.model';
 import { Brand } from 'src/Models/Brand.model';
-import { DiscountEnum } from 'src/common/enum/product.enum';
+import { DiscountTypeEnum } from 'src/common/enum/product.enum';
 
 @Injectable()
 export class ProductRepo extends DBRepo<IProduct> {
@@ -47,16 +47,16 @@ export class ProductRepo extends DBRepo<IProduct> {
   }
 
   calcPriceAfterDiscount(
-    discountType: DiscountEnum,
+    discountType: DiscountTypeEnum,
     price: number,
     discountValue: number,
   ) {
     let priceAfterDiscount: number;
     switch (discountType) {
-      case DiscountEnum.static:
+      case DiscountTypeEnum.Static:
         priceAfterDiscount = price - discountValue;
         break;
-      case DiscountEnum.percentage:
+      case DiscountTypeEnum.Percentage:
         priceAfterDiscount = price - (price * discountValue) / 100;
         break;
     }

@@ -1,31 +1,34 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from './modules/auth/auth.module';
-import { UserController } from './modules/user/user.controller';
-import { User } from 'src/Models/User.model';
-import { UserModule } from './modules/user/user.module';
-import { OrderModule } from './modules/order/order.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { JwtModule } from '@nestjs/jwt';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { SharedModule } from './common/module/shared.module';
-import { CategoryModule } from './modules/category/category.module';
-import { SubCategoryModule } from './modules/subcategory/subcategory.module';
-import { BrandModule } from './modules/brand/brand.module';
 import { S3BucketService } from './common/services/s3.service';
-import { UserService } from './modules/user/user.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { BrandModule } from './modules/brand/brand.module';
+import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
+import { SubCategoryModule } from './modules/subcategory/subcategory.module';
+import { UserController } from './modules/user/user.controller';
+import { UserModule } from './modules/user/user.module';
+import { UserService } from './modules/user/user.service';
+import { CartModule } from './modules/cart/cart.module';
+import { CouponModule } from './modules/coupon/coupon.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
     SharedModule,
     AuthModule,
     UserModule,
-    OrderModule,
     CategoryModule,
     SubCategoryModule,
+    CartModule,
+    OrderModule,
+    CouponModule,
     BrandModule,
     JwtModule.register({ global: true }),
     ConfigModule.forRoot({

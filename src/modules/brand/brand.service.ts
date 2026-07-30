@@ -56,7 +56,7 @@ export class BrandService {
           );
         }
       }
-      throw new BadRequestException('Failed to create new brand.');
+      throw error
     }
   }
 

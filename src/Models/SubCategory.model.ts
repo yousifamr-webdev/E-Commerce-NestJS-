@@ -16,6 +16,7 @@ export interface ISubCategory {
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
   strictQuery: true,
+  id: false,
 })
 export class SubCategory implements ISubCategory {
   @Prop({

@@ -6,7 +6,7 @@ import { AuthorizationGuard } from '../guard/authorization.guard';
 
 export function Auth({
   expectedTokenType = TokenEnum.Access,
-  roles = [RoleEnum.User, RoleEnum.Admin],
+  roles= [RoleEnum.User,RoleEnum.Admin],
 }: {
   expectedTokenType?: TokenEnum;
   roles?: RoleEnum[];

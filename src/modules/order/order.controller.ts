@@ -1,34 +1,92 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { User } from 'src/common/decorator/user.decorator';
+import type { UserDocument } from 'src/Models/User.model';
+import { Auth } from 'src/common/decorator/auth.decorator';
+import { CreateOrderDto } from './dto/order.create.dto';
+import { UpdateOrderDto } from './dto/order.update.dto';
+import { Types } from 'mongoose';
+import { RoleEnum } from 'src/common/enum/user.enums';
 
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
+  @Auth({})
+  @Post('/cash')
+  async CreateCashOrder(
+    @User() user: UserDocument,
+    @Body() data: CreateOrderDto,
+  ) {
+    const result = await this.orderService.CreateCashOrder(user, data);
+    return result;
   }
 
+  @Auth({})
+  @Post('/card')
+  async CreateCardOrder(
+    @User() user: UserDocument,
+    @Body() data: CreateOrderDto,
+  ) {
+    const result = await this.orderService.CreateCardOrder(user, data);
+    return result;
+  }
+
+  @Auth({ roles: [RoleEnum.Admin] })
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  async GetAllOrders() {
+    const result = await this.orderService.GetAllOrders();
+    return result;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+  @Auth({})
+  @Get('/:orderId')
+  async GetOrder(
+    @Param('orderId') orderId: Types.ObjectId,
+    @User() user: UserDocument,
+  ) {
+    const result = await this.orderService.GetOrder(orderId, user);
+    return result;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  @Auth({})
+  @Patch('/:orderId')
+  async UpdateOrder(
+    @Param('orderId') orderId: Types.ObjectId,
+    @Body() data: UpdateOrderDto,
+    @User() user: UserDocument,
+  ) {
+    const result = await this.orderService.UpdateOrder(orderId, data, user);
+    return result;
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+  @Auth({})
+  @Delete('/:orderId')
+  async DeleteOrder(
+    @Param('orderId') orderId: Types.ObjectId,
+    @User() user: UserDocument,
+  ) {
+    const result = await this.orderService.DeleteOrder(orderId, user);
+    return result;
+  }
+
+  @Post('/paid')
+  async UpdateCardPaymentStatus(@Body() data: any) {
+    const result = await this.orderService.UpdateCardPaymentStatus(data);
+    return result;
+  }
+  @Auth({})
+  @Post('/:orderId/refund')
+  async RefundCardOrder(@Body() data: any) {
+    const result = await this.orderService.RefundCardOrder(data);
+    return result;
   }
 }

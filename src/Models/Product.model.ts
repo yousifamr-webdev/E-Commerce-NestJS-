@@ -2,7 +2,7 @@ import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 import slugify from 'slugify';
 import { Category } from './Category.model';
-import { DiscountEnum } from 'src/common/enum/product.enum';
+import { DiscountTypeEnum } from 'src/common/enum/product.enum';
 import { Brand } from './Brand.model';
 import { SubCategory } from './SubCategory.model';
 
@@ -14,7 +14,7 @@ export interface IProduct {
   priceAfterDiscount: number;
   discount: {
     value: number;
-    discountType: DiscountEnum;
+    discountType: DiscountTypeEnum;
   };
   stock: number;
   gallery: string[];
@@ -28,7 +28,7 @@ export interface IProduct {
   isActive: boolean;
 }
 
-@Schema({_id:false})
+@Schema({id:false})
 export class DiscountSchema {
   @Prop({
     type: Number,
@@ -38,9 +38,9 @@ export class DiscountSchema {
 
   @Prop({
     type: Number,
-    enum: DiscountEnum,
+    enum: DiscountTypeEnum,
   })
-  discountType!: DiscountEnum;
+  discountType!: DiscountTypeEnum;
 }
 
 @Schema({
@@ -110,7 +110,7 @@ export class Product implements IProduct {
   })
   discount!: {
     value: number;
-    discountType: DiscountEnum;
+    discountType: DiscountTypeEnum;
   };
 
   @Prop({

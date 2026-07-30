@@ -15,6 +15,7 @@ export interface IBrand {
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
   strictQuery: true,
+  id: false,
 })
 export class Brand implements IBrand {
   @Prop({

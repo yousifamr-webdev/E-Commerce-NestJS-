@@ -11,7 +11,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Types } from 'mongoose';
-import { DiscountEnum } from 'src/common/enum/product.enum';
+import { DiscountTypeEnum } from 'src/common/enum/product.enum';
 import { IProduct } from 'src/Models/Product.model';
 
 export class DiscountDto {
@@ -20,9 +20,9 @@ export class DiscountDto {
   @Type(() => Number)
   value!: number;
 
-  @IsEnum(DiscountEnum)
+  @IsEnum(DiscountTypeEnum)
   @Type(() => Number)
-  discountType!: DiscountEnum;
+  discountType!: DiscountTypeEnum;
 }
 
 export class CreateProductDto {

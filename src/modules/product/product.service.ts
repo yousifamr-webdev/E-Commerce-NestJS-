@@ -11,7 +11,7 @@ import slugify from 'slugify';
 import { Types } from 'mongoose';
 import { UpdateProductDto } from './dto/product.update.dto';
 import { S3BucketService } from 'src/common/services/s3.service';
-import { DiscountEnum } from 'src/common/enum/product.enum';
+import { DiscountTypeEnum } from 'src/common/enum/product.enum';
 import { customSlugify } from 'src/common/services/slugify.service';
 
 @Injectable()
@@ -25,9 +25,10 @@ export class ProductService {
     let priceAfterDiscount: number = price;
     if (discount) {
       if (
-        (discount.discountType == DiscountEnum.percentage &&
+        (discount.discountType == DiscountTypeEnum.Percentage &&
           discount.value > 100) ||
-        (discount.discountType == DiscountEnum.static && discount.value > price)
+        (discount.discountType == DiscountTypeEnum.Static &&
+          discount.value > price)
       ) {
         throw new BadRequestException('Invalid discount value.');
       }
@@ -122,7 +123,7 @@ export class ProductService {
         throw new BadRequestException('Name already exists.');
       }
       product.name = data.name;
-      product.slug = customSlugify(data.name)
+      product.slug = customSlugify(data.name);
     }
     if (gallery?.length) {
       product.gallery.push(...gallery);

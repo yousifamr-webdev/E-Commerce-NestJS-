@@ -1,4 +1,4 @@
-export const SERVER_PORT = process.env.PORT || 3000
+export const SERVER_PORT = process.env.PORT || 3000;
 export const DB_URI_ATLAS = process.env.DB_URI_ATLAS as string;
 export const DB_URI_LOCAL = process.env.DB_URI_LOCAL as string;
 export const SALT = parseInt(process.env.SALT as string);
@@ -24,3 +24,6 @@ export const ACCESS_KEY_ID = process.env.ACCESS_KEY_ID as string;
 export const SECRET_ACCESS_KEY = process.env.SECRET_ACCESS_KEY as string;
 export const BUCKET_NAME = process.env.BUCKET_NAME as string;
 export const APPLICATION_NAME = process.env.APPLICATION_NAME as string;
+
+
+export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY as string;
