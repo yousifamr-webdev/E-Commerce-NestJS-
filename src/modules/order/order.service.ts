@@ -27,7 +27,7 @@ export class OrderService {
     private readonly stripeService: StripeService,
   ) {}
 
-  async CreateCashOrder(user: UserDocument, data: CreateOrderDto) {
+  async createCashOrder(user: UserDocument, data: CreateOrderDto) {
     const cart = await this.cartModel.findOne({
       _id: data.cartId,
       userId: user._id,
@@ -66,7 +66,7 @@ export class OrderService {
     };
   }
 
-  async CreateCardOrder(user: UserDocument, data: CreateOrderDto) {
+  async createCardOrder(user: UserDocument, data: CreateOrderDto) {
     const cart = await this.cartModel
       .findOne({
         _id: data.cartId,
@@ -137,7 +137,7 @@ export class OrderService {
     };
   }
 
-  async UpdateCardPaymentStatus(body: any) {
+  async updateCardPaymentStatus(body: any) {
     const orderId = body.data.object.metadata.orderId;
     const paymentIntent = body.data.object.payment_intent;
 
@@ -159,7 +159,7 @@ export class OrderService {
     };
   }
 
-  async RefundCardOrder(orderId: Types.ObjectId | string) {
+  async refundCardOrder(orderId: Types.ObjectId | string) {
   const order = await this.orderModel.findOneAndUpdate(
     {
       _id: orderId,
@@ -188,7 +188,7 @@ export class OrderService {
     };
   }
 
-  async GetOrder(orderId: string | Types.ObjectId, user: UserDocument) {
+  async getOrder(orderId: string | Types.ObjectId, user: UserDocument) {
     const order = await this.orderModel.findById(orderId).populate('cart');
 
     if (!order) {
@@ -208,7 +208,7 @@ export class OrderService {
     };
   }
 
-  async UpdateOrder(
+  async updateOrder(
     orderId: string | Types.ObjectId,
     data: UpdateOrderDto,
     user: UserDocument,
@@ -235,7 +235,7 @@ export class OrderService {
     };
   }
 
-  async DeleteOrder(orderId: string | Types.ObjectId, user: UserDocument) {
+  async deleteOrder(orderId: string | Types.ObjectId, user: UserDocument) {
     const order = await this.orderModel.findById(orderId);
 
     if (!order) {
@@ -259,7 +259,7 @@ export class OrderService {
     };
   }
 
-  async GetAllOrders() {
+  async getAllOrders() {
     const orders = await this.orderModel.find().populate('cart');
 
     if (!orders) {

@@ -27,14 +27,14 @@ export class CartController {
     @User() user: UserDocument,
     @Body() data: AddProductToCartDto,
   ) {
-    const result = await this.cartService.AddProductToCart(user._id, data);
+    const result = await this.cartService.addProductToCart(user._id, data);
     return result;
   }
 
   @Auth({})
   @Get('/:cartId')
   async GetCart(@User() user: UserDocument, @Param('cartId') cartId: string) {
-    const result = await this.cartService.GetCart(user, cartId);
+    const result = await this.cartService.getCart(user, cartId);
     return result;
   }
 
@@ -45,7 +45,7 @@ export class CartController {
     @Param('cartId') cartId: string,
     @Body() data: UpdateCartDto,
   ) {
-    const result = await this.cartService.UpdateCart(user, cartId, data);
+    const result = await this.cartService.updateCart(user, cartId, data);
     return result;
   }
 
@@ -56,7 +56,7 @@ export class CartController {
     @Param('productId') productId: Types.ObjectId,
     @User() user: UserDocument,
   ) {
-    const result = await this.cartService.RemoveProductFromCart(
+    const result = await this.cartService.removeProductFromCart(
       cartId,
       productId,
       user,
@@ -70,7 +70,7 @@ export class CartController {
     @Param('cartId') cartId: Types.ObjectId,
     @User() user: UserDocument,
   ) {
-    const result = await this.cartService.ClearCart(cartId, user);
+    const result = await this.cartService.clearCart(cartId, user);
     return result;
   }
 }

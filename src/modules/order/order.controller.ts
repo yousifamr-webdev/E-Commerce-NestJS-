@@ -26,7 +26,7 @@ export class OrderController {
     @User() user: UserDocument,
     @Body() data: CreateOrderDto,
   ) {
-    const result = await this.orderService.CreateCashOrder(user, data);
+    const result = await this.orderService.createCashOrder(user, data);
     return result;
   }
 
@@ -36,14 +36,14 @@ export class OrderController {
     @User() user: UserDocument,
     @Body() data: CreateOrderDto,
   ) {
-    const result = await this.orderService.CreateCardOrder(user, data);
+    const result = await this.orderService.createCardOrder(user, data);
     return result;
   }
 
   @Auth({ roles: [RoleEnum.Admin] })
   @Get()
   async GetAllOrders() {
-    const result = await this.orderService.GetAllOrders();
+    const result = await this.orderService.getAllOrders();
     return result;
   }
 
@@ -53,7 +53,7 @@ export class OrderController {
     @Param('orderId') orderId: Types.ObjectId,
     @User() user: UserDocument,
   ) {
-    const result = await this.orderService.GetOrder(orderId, user);
+    const result = await this.orderService.getOrder(orderId, user);
     return result;
   }
 
@@ -64,7 +64,7 @@ export class OrderController {
     @Body() data: UpdateOrderDto,
     @User() user: UserDocument,
   ) {
-    const result = await this.orderService.UpdateOrder(orderId, data, user);
+    const result = await this.orderService.updateOrder(orderId, data, user);
     return result;
   }
 
@@ -74,19 +74,19 @@ export class OrderController {
     @Param('orderId') orderId: Types.ObjectId,
     @User() user: UserDocument,
   ) {
-    const result = await this.orderService.DeleteOrder(orderId, user);
+    const result = await this.orderService.deleteOrder(orderId, user);
     return result;
   }
 
   @Post('/paid')
   async UpdateCardPaymentStatus(@Body() data: any) {
-    const result = await this.orderService.UpdateCardPaymentStatus(data);
+    const result = await this.orderService.updateCardPaymentStatus(data);
     return result;
   }
   @Auth({})
   @Post('/:orderId/refund')
   async RefundCardOrder(@Body() data: any) {
-    const result = await this.orderService.RefundCardOrder(data);
+    const result = await this.orderService.refundCardOrder(data);
     return result;
   }
 }

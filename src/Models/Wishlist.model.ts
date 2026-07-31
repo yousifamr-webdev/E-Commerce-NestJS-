@@ -3,9 +3,26 @@ import { Types } from 'mongoose';
 import { User } from './User.model';
 import { Product } from './Product.model';
 
+@Schema({
+  _id: false,
+})
+export class WishlistProduct {
+  @Prop({
+    type: Types.ObjectId,
+    ref: Product.name,
+    required: true,
+  })
+  productId!: Types.ObjectId;
+
+  @Prop({
+    default: Date.now,
+  })
+  addedAt?: Date;
+}
+
 export interface IWishlist {
   userId: Types.ObjectId;
-  products: Types.ObjectId[];
+  products: WishlistProduct[];
 }
 
 @Schema({
@@ -20,13 +37,20 @@ export class Wishlist implements IWishlist {
   userId!: Types.ObjectId;
 
   @Prop({
-    type: [{ type: Types.ObjectId, ref: Product.name }],
+    type: [WishlistProduct],
     default: [],
   })
-  products!: Types.ObjectId[];
+  products!: WishlistProduct[];
 }
 
 const wishlistSchema = SchemaFactory.createForClass(Wishlist);
+
+wishlistSchema.index(
+  {
+    userId: 1,
+  },
+  { unique: true },
+);
 
 export const wishlistModel = MongooseModule.forFeature([
   { name: Wishlist.name, schema: wishlistSchema },

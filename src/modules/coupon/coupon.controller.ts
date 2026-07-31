@@ -26,14 +26,14 @@ export class CouponController {
     @User() user: UserDocument,
     @Body() data: CreateCouponDto,
   ) {
-    const result = await this.couponService.CreateCoupon(user, data);
+    const result = await this.couponService.createCoupon(user, data);
     return result;
   }
 
   @Auth({roles:[RoleEnum.Admin]})
   @Get()
   async GetAllCoupons() {
-    const result = await this.couponService.GetAllCoupons();
+    const result = await this.couponService.getAllCoupons();
     return result;
   }
 
@@ -43,7 +43,7 @@ export class CouponController {
     @Param('couponId') couponId: Types.ObjectId,
     @Body() data: UpdateCouponDto,
   ) {
-    const result = await this.couponService.UpdateCoupon(couponId, data);
+    const result = await this.couponService.updateCoupon(couponId, data);
     return result;
   }
 
@@ -53,7 +53,7 @@ export class CouponController {
     @Param('couponId') couponId: Types.ObjectId,
     @User() user: UserDocument,
   ) {
-    const result = await this.couponService.DeleteCoupon(couponId, user);
+    const result = await this.couponService.deleteCoupon(couponId, user);
     return result;
   }
 
@@ -64,7 +64,7 @@ export class CouponController {
     @Param('couponId') couponId: string,
     @User() user: UserDocument,
   ) {
-    const result = await this.couponService.ApplyCouponToCart(
+    const result = await this.couponService.applyCouponToCart(
       cartId,
       couponId,
       user,
@@ -78,7 +78,7 @@ export class CouponController {
     @Param('cartId') cartId: Types.ObjectId,
     @User() user: UserDocument,
   ) {
-    const result = await this.couponService.RemoveCouponFromCart(cartId, user);
+    const result = await this.couponService.removeCouponFromCart(cartId, user);
     return result;
   }
 }

@@ -21,7 +21,7 @@ export class CouponService {
     @InjectModel(Cart.name) private readonly cartModel: Model<Cart>,
   ) {}
 
-  async CreateCoupon(user: UserDocument, data: CreateCouponDto) {
+  async createCoupon(user: UserDocument, data: CreateCouponDto) {
     if (data.isActive) {
       if (!data.deactivationDate) {
         throw new BadRequestException(
@@ -49,7 +49,7 @@ export class CouponService {
     };
   }
 
-  async UpdateCoupon(couponId: string | Types.ObjectId, data: UpdateCouponDto) {
+  async updateCoupon(couponId: string | Types.ObjectId, data: UpdateCouponDto) {
     if (data.isActive) {
       if (!data.deactivationDate) {
         throw new BadRequestException(
@@ -78,7 +78,7 @@ export class CouponService {
     };
   }
 
-  async DeleteCoupon(couponId: string | Types.ObjectId, user: UserDocument) {
+  async deleteCoupon(couponId: string | Types.ObjectId, user: UserDocument) {
     const coupon = await this.couponModel.findById(couponId);
 
     if (!coupon) {
@@ -98,7 +98,7 @@ export class CouponService {
     };
   }
 
-  async GetAllCoupons() {
+  async getAllCoupons() {
     const coupons = await this.couponModel.find();
     if (!coupons) {
       throw new NotFoundException('No coupons were found');
@@ -111,7 +111,7 @@ export class CouponService {
     };
   }
 
-  async ApplyCouponToCart(
+  async applyCouponToCart(
     cartId: string | Types.ObjectId,
     couponId: string | Types.ObjectId,
     user: UserDocument,
@@ -173,7 +173,7 @@ export class CouponService {
     };
   }
 
-  async RemoveCouponFromCart(
+  async removeCouponFromCart(
     cartId: string | Types.ObjectId,
     user: UserDocument,
   ) {

@@ -16,7 +16,7 @@ export class CartService {
     private readonly s3Service: S3BucketService,
   ) {}
 
-  async AddProductToCart(
+  async addProductToCart(
     userId: string | Types.ObjectId,
     data: AddProductToCartDto,
   ) {
@@ -69,7 +69,7 @@ export class CartService {
     };
   }
 
-  async GetCart(user: UserDocument, cartId: string | Types.ObjectId) {
+  async getCart(user: UserDocument, cartId: string | Types.ObjectId) {
     const cart = await this.cartModel.findOne({
       _id: cartId,
       userId: user._id,
@@ -86,7 +86,7 @@ export class CartService {
     };
   }
 
-  async UpdateCart(
+  async updateCart(
     user: UserDocument,
     cartId: string | Types.ObjectId,
     data: UpdateCartDto,
@@ -121,7 +121,7 @@ export class CartService {
     };
   }
 
-  async RemoveProductFromCart(
+  async removeProductFromCart(
     cartId: string | Types.ObjectId,
     productId: string | Types.ObjectId,
     user: UserDocument,
@@ -149,7 +149,7 @@ export class CartService {
     };
   }
 
-  async ClearCart(cartId: string | Types.ObjectId, user: UserDocument) {
+  async clearCart(cartId: string | Types.ObjectId, user: UserDocument) {
     const cart = await this.cartModel.findOne({
       _id: cartId,
       userId: user._id,

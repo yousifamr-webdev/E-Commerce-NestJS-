@@ -8,7 +8,7 @@ import {
 import { TokenService } from '../services/token.service';
 import { IRequestAuth } from '../interface/request.interface';
 import { Reflector } from '@nestjs/core';
-import { TokenEnum } from '../enum/token.enums';
+import { JsonWebTokenError } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
@@ -21,12 +21,12 @@ export class AuthenticationGuard implements CanActivate {
     let authorization!: string;
     let req!: IRequestAuth;
     const contextType = context.getType();
+
     switch (contextType) {
       case 'http':
         req = context.switchToHttp().getRequest();
         authorization = req.headers.authorization!;
         break;
-
       default:
         break;
     }
@@ -48,15 +48,29 @@ export class AuthenticationGuard implements CanActivate {
     const expectedTokenType = this._reflector.getAllAndOverride(
       'expectedTokenType',
       [context.getHandler(), context.getClass()],
-    ) 
-
-    const { user, verifiedToken } = await this._tokenService.checkToken(
-      token,
-      expectedTokenType,
     );
 
-    req.user = user;
-    req.tokenPayload = verifiedToken;
-    return true;
+    try {
+      const { user, verifiedToken } = await this._tokenService.checkToken(
+        token,
+        expectedTokenType,
+      );
+
+      req.user = user;
+      req.tokenPayload = verifiedToken;
+      return true;
+    } catch (error: any) {
+      if (error.name === 'TokenExpiredError') {
+        throw new UnauthorizedException(
+          'Your session has expired. Please log in again.',
+        );
+      }
+
+      if (error.name === 'JsonWebTokenError') {
+        throw new UnauthorizedException('Invalid token signature or format.');
+      }
+
+      throw new UnauthorizedException('Authentication failed.');
+    }
   }
 }

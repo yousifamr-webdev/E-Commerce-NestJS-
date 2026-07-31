@@ -18,6 +18,7 @@ import { UserService } from './modules/user/user.service';
 import { CartModule } from './modules/cart/cart.module';
 import { CouponModule } from './modules/coupon/coupon.module';
 import { OrderModule } from './modules/order/order.module';
+import { WishlistModule } from './modules/wishlist/wishlist.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { OrderModule } from './modules/order/order.module';
     OrderModule,
     CouponModule,
     BrandModule,
+    WishlistModule,
     JwtModule.register({ global: true }),
     ConfigModule.forRoot({
       envFilePath: ['.env.dev', '.env.prod'],
