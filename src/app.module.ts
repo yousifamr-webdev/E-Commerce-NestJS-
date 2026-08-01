@@ -19,6 +19,7 @@ import { CartModule } from './modules/cart/cart.module';
 import { CouponModule } from './modules/coupon/coupon.module';
 import { OrderModule } from './modules/order/order.module';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { WishlistModule } from './modules/wishlist/wishlist.module';
     OrderModule,
     CouponModule,
     BrandModule,
+    AddressModule,
     WishlistModule,
     JwtModule.register({ global: true }),
     ConfigModule.forRoot({

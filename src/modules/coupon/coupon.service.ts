@@ -136,7 +136,7 @@ export class CouponService {
 
     const currentDate = new Date();
 
-    if (coupon.activationDate && currentDate < coupon.activationDate) {
+    if (coupon.activationDate && currentDate < coupon.activationDate && coupon.isActive) {
       throw new BadRequestException('Coupon is not yet active');
     }
 

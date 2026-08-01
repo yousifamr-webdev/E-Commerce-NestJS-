@@ -89,29 +89,37 @@ abstract class DBRepo<T> {
   }
 
   async paginate({
-    filter,
+    filter = {},
     projection,
-    options,
+    options = {},
     page = 1,
-    size = 3,
+    limit = 20,
   }: {
     filter?: QueryFilter<T>;
-    projection?: ProjectionType<T> | null | undefined;
+    projection?: ProjectionType<T> | null;
     options?: QueryOptions<T>;
     page?: number;
-    size?: number;
+    limit?: number;
   }) {
-    const skip = (page - 1) * size;
+    const skip = (page - 1) * limit;
 
-    const docs = await this.Model.find(filter, projection, options)
-      .skip(skip)
-      .limit(size);
+    const [docs, totalDocs] = await Promise.all([
+      this.Model.find(filter, projection, options).skip(skip).limit(limit),
+      this.Model.countDocuments(filter),
+    ]);
 
-    const totalDocs = await this.Model.countDocuments(filter);
-
-    return { docs, page, totalDocs, totalPages: Math.ceil(totalDocs / size) };
+    return {
+      docs,
+      pagination: {
+        page,
+        limit,
+        totalDocs,
+        totalPages: Math.ceil(totalDocs / limit),
+        hasNextPage: page * limit < totalDocs,
+        hasPreviousPage: page > 1,
+      },
+    };
   }
-
   async deleteOne({
     filter,
     options,

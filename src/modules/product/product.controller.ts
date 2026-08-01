@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -13,6 +15,9 @@ import { CreateProductDto } from './dto/product.create.dto';
 import { S3BucketService } from 'src/common/services/s3.service';
 import { UpdateProductDto } from './dto/product.update.dto';
 import { Types } from 'mongoose';
+import { GetAllProductsDto } from './dto/product.find.dto';
+import { Auth } from 'src/common/decorator/auth.decorator';
+import { RoleEnum } from 'src/common/enum/user.enums';
 
 @Controller('product')
 export class ProductController {
@@ -21,6 +26,7 @@ export class ProductController {
     private readonly s3Service: S3BucketService,
   ) {}
 
+  @Auth({ roles: [RoleEnum.Admin] })
   @Post('')
   @UseInterceptors(FilesInterceptor('gallery', 5))
   async createProduct(
@@ -36,6 +42,7 @@ export class ProductController {
     return result;
   }
 
+  @Auth({ roles: [RoleEnum.Admin] })
   @Patch('/:id')
   @UseInterceptors(FilesInterceptor('gallery', 5))
   async updateProduct(
@@ -52,5 +59,15 @@ export class ProductController {
     }
     const result = await this.productService.updateProduct(id, data, gallery);
     return result;
+  }
+
+  @Get('/all')
+  async getAllProducts(@Query() query: GetAllProductsDto) {
+    return await this.productService.getAllProducts(query);
+  }
+
+  @Get('/:productId')
+  async getProductById(@Param('productId') productId: Types.ObjectId | string) {
+    return await this.productService.getProductById(productId);
   }
 }

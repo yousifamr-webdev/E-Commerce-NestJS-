@@ -1,7 +1,4 @@
 import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
-import slugify from 'slugify';
-import { Category } from './Category.model';
 
 export interface IBrand {
   name: string;
