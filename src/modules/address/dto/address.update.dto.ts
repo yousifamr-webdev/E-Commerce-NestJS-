@@ -8,13 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 import { Types } from 'mongoose';
+import { CreateAddressDto } from './address.create.dto';
+import { PartialType } from '@nestjs/mapped-types';
 
-export class RemoveProductFromWishlistDto {
-  @IsNotEmpty()
-  @IsMongoId()
-  wishlistId!: Types.ObjectId;
-
-  @IsNotEmpty()
-  @IsMongoId()
-  productId!: Types.ObjectId;
-}
+export class UpdateAddressDto extends PartialType(CreateAddressDto) {}
